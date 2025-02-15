@@ -1,17 +1,29 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./Hero.module.scss";
 
 const Hero = () => {
+  const [stars, setStars] = useState([]);
+
+  useEffect(() => {
+    // Generate star data after component mounts
+    const starData = [...Array(20)].map(() => ({
+      speed: Math.random() * 0.01,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+    }));
+    setStars(starData);
+  }, []);
+
   useEffect(() => {
     const handleMouseMove = (e) => {
-      const stars = document.getElementsByClassName(styles.star);
+      const starElements = document.getElementsByClassName(styles.star);
       const x = e.clientX;
       const y = e.clientY;
 
-      for (let star of stars) {
+      for (let star of starElements) {
         const speed = star.getAttribute("data-speed");
         const rect = star.getBoundingClientRect();
         const starX = rect.left + rect.width / 2;
@@ -33,14 +45,14 @@ const Hero = () => {
   return (
     <section className={styles.hero}>
       <div className={styles.starfield}>
-        {[...Array(20)].map((_, i) => (
+        {stars.map((star, i) => (
           <div
             key={i}
             className={styles.star}
-            data-speed={Math.random() * 0.01}
+            data-speed={star.speed}
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: star.left,
+              top: star.top,
             }}
           />
         ))}

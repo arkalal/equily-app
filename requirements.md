@@ -304,3 +304,27 @@ eqly-app/
 6. Optimized font loading
 7. Minimal bundle size
 8. Progressive enhancement
+
+## Bug Fixes
+
+1. CSS Modules Pure Selector Issue
+
+   - Problem: Bare `h1` selector in Hero.module.scss causing compilation error
+   - Fix: Replaced bare `h1` selector with `.title` class and updated component to use the class
+   - Impact: Resolved CSS Modules compilation error and maintained proper CSS scoping
+
+2. Next.js Hydration Error
+
+   - Problem: Server/client HTML mismatch due to random values in Hero component
+   - Root Cause: `Math.random()` generating different values during server and client rendering
+   - Fix:
+     - Moved random value generation to useEffect hook
+     - Implemented useState to manage star positions
+     - Generated star data after component mount
+     - Initial render now starts with empty stars array on both server and client
+   - Impact: Resolved hydration error while maintaining the interactive star field effect
+
+3. Performance Optimization
+   - Reduced unnecessary re-renders by moving star generation logic to useEffect
+   - Improved memory management by cleaning up event listeners
+   - Better state management for dynamic values
